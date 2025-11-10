@@ -42,6 +42,39 @@ foreach ($orders as $order) {
         'subtotal' => $order['ThanhTien']
     ];
 }
+
+// Xử lý cập nhật thông tin
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $action = $_POST['action'] ?? '';
+    
+    if ($action === 'update_profile') {
+        $tenND = $_POST['TenND'] ?? '';
+        $sdt = $_POST['SDT'] ?? '';
+        $diaChi = $_POST['DiaChi'] ?? '';
+        
+        if (!empty($tenND) && !empty($sdt) && !empty($diaChi)) {
+            $data = [
+                'TenND' => $tenND,
+                'SDT' => $sdt,
+                'DiaChi' => $diaChi
+            ];
+            
+            if ($nguoiDungBUS->update_by_id($data, $userId)) {
+                // Cập nhật session
+                $_SESSION['user']['name'] = $tenND;
+                $_SESSION['user']['SDT'] = $sdt;
+                $_SESSION['user']['DiaChi'] = $diaChi;
+                
+                echo json_encode(['success' => true, 'message' => 'Cập nhật thông tin thành công!']);
+            } else {
+                echo json_encode(['success' => false, 'message' => 'Cập nhật thất bại!']);
+            }
+        } else {
+            echo json_encode(['success' => false, 'message' => 'Vui lòng điền đầy đủ thông tin!']);
+        }
+        exit();
+    }
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -74,10 +107,15 @@ foreach ($orders as $order) {
             <h2 class="user-name"><?= htmlspecialchars($user['TenND']) ?></h2>
             <p><strong>Số điện thoại:</strong> <?= htmlspecialchars($user['SDT']) ?></p>
             <p><strong>Email:</strong> <?= htmlspecialchars($user['Email']) ?></p>
+            <p><strong>Địa chỉ:</strong> <?= htmlspecialchars($user['DiaChi']) ?></p>
         </div>
 
-        <!-- Toggle Icons -->
-        <div class="toggle-icons">
+         <!-- Toggle Icons -->
+         <div class="toggle-icons">
+            <div class="icon-section" onclick="toggleEditProfile()">
+                <i class="fas fa-user-edit"></i>
+                <span>Sửa thông tin</span>
+            </div>
             <div class="icon-section" onclick="toggleHistory()">
                 <i class="fas fa-history history-icon"></i>
                 <span>Lịch sử mua hàng</span>
@@ -86,6 +124,28 @@ foreach ($orders as $order) {
                 <i class="fas fa-sign-out-alt"></i>
                 <span>Đăng xuất</span> 
             </div>
+        </div>
+        <!-- Edit Profile Form -->
+        <div class="edit-section" id="editProfile" style="display: none;">
+            <h3>Sửa Thông Tin Cá Nhân</h3>
+            <form id="profileForm">
+                <div class="form-group">
+                    <label for="editTenND">Họ và tên:</label>
+                    <input type="text" id="editTenND" name="TenND" value="<?= htmlspecialchars($user['TenND']) ?>" required>
+                </div>
+                <div class="form-group">
+                    <label for="editSDT">Số điện thoại:</label>
+                    <input type="text" id="editSDT" name="SDT" value="<?= htmlspecialchars($user['SDT']) ?>" required>
+                </div>
+                <div class="form-group">
+                    <label for="editDiaChi">Địa chỉ:</label>
+                    <textarea id="editDiaChi" name="DiaChi" rows="3" required><?= htmlspecialchars($user['DiaChi']) ?></textarea>
+                </div>
+                <div class="form-buttons">
+                    <button type="submit" class="save-btn">Lưu thay đổi</button>
+                    <button type="button" class="cancel-btn" onclick="toggleEditProfile()">Hủy</button>
+                </div>
+            </form>
         </div>
 
         <!-- Purchase History -->
@@ -129,10 +189,44 @@ foreach ($orders as $order) {
     </div>
     
     <script>
+         function toggleEditProfile() {
+            const profileSection = document.getElementById('editProfile');
+            const historySection = document.getElementById('purchaseHistory');
+            
+            profileSection.style.display = profileSection.style.display === 'none' ? 'block' : 'none';
+            historySection.style.display = 'none';
+        }
+
         function toggleHistory() {
             const historySection = document.getElementById('purchaseHistory');
             historySection.style.display = historySection.style.display === 'none' ? 'block' : 'none';
         }
+
+        // Xử lý form sửa thông tin
+        document.getElementById('profileForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            formData.append('action', 'update_profile');
+            
+            fetch('user.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    Swal.fire('Thành công!', data.message, 'success').then(() => {
+                        location.reload();
+                    });
+                } else {
+                    Swal.fire('Lỗi!', data.message, 'error');
+                }
+            })
+            .catch(error => {
+                Swal.fire('Lỗi!', 'Đã xảy ra lỗi khi cập nhật thông tin', 'error');
+            });
+        });
 
         function logout() {
             Swal.fire({
