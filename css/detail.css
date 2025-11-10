@@ -1,0 +1,393 @@
+/* Chung */
+body {
+  font-family: Arial, sans-serif;
+  background-color: #f9f9f9;
+  margin: 0;
+  padding: 0;
+}
+
+/* Phần chi tiết sản phẩm */
+.product-detail {
+  padding: 50px 0;
+  background-color: #fff;
+}
+
+.detail-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 40px;
+  width: 80%;
+  margin: 0 auto;
+}
+
+/* bên trái (Hình ảnh sản phẩm) */
+.detail-left {
+  flex: 1;
+}
+
+.detail-image {
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+/* Phần gallery ảnh mô tả */
+.gallery-image {
+  white-space: nowrap;
+  margin-top: 20px;
+}
+
+.sub-image {
+  display: flex;
+  gap: 10px;
+}
+
+.sub-image1 {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  display: inline;
+}
+
+.sub-image1:hover {
+  transform: scale(1.1);
+  border: 1px solid #e60070;
+}
+
+/* bên phải (Thông tin sản phẩm) */
+.detail-right {
+  flex: 1;
+  padding: 20px;
+}
+
+.detail-name {
+  font-size: 28px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.detail-descri {
+  font-size: 16px;
+  color: #555;
+  margin-bottom: 20px;
+}
+
+.detail-price {
+  font-size: 24px;
+  font-weight: bold;
+  color: #ff007f;
+  margin-bottom: 20px;
+}
+
+.detail-size {
+  margin-bottom: 30px;
+}
+
+.size-select {
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  margin-top: 10px;
+}
+
+.quantity {
+  margin-bottom: 20px;
+}
+
+#quantity {
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  width: 80px;
+}
+
+.buy-now {
+  width: 100%;
+  background-color: #ff8000;
+  color: #fff;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.buy-now:hover {
+  background-color: #e65c00;
+}
+
+.add-to-cart {
+  background-color: #ff007f;
+  color: #fff;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.add-to-cart:hover {
+  background-color: #e60070;
+}
+
+.view-more-products {
+  height: 100px;
+}
+.view-more-btn {
+  background-color: #ffffff;
+  color: #ff5900;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 16px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.view-more-btn:hover {
+  border: 2px solid #ff5900;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .detail-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .detail-left,
+  .detail-right {
+    flex: none;
+    width: 100%;
+  }
+
+  .detail-image {
+    max-width: 100%;
+  }
+
+  .detail-name {
+    font-size: 24px;
+  }
+
+  .detail-price {
+    font-size: 20px;
+  }
+
+  .size-select {
+    width: 100%;
+  }
+
+  .quantity {
+    width: 100%;
+    text-align: center;
+    margin-top: 10px;
+  }
+
+  .buy-now,
+  .add-to-cart {
+    width: 100%;
+    font-size: 18px;
+    padding: 12px 0;
+  }
+}
+
+/* mô tả sản phẩm */
+
+.product-description {
+  font-family: Arial, sans-serif;
+  background-color: #f9f9f9;
+  padding: 20px;
+  border-radius: 10px;
+  margin: 20px auto;
+  max-width: 800px;
+}
+
+/* mô tả sản phẩm */
+.product-description h2 {
+  color: #333;
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+table th,
+table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+table th {
+  background-color: #f4f4f4;
+  color: #444;
+  font-weight: bold;
+}
+
+table td {
+  color: #555;
+}
+
+table tr:hover {
+  background-color: #f9f9f9;
+}
+
+.ts p {
+  font-size: 18px;
+  font-weight: bold;
+  color: #444;
+}
+
+.ts {
+  margin-top: 20px;
+}
+
+.ts p {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+}
+
+.ts ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.ts li {
+  font-size: 16px;
+  color: #555;
+  line-height: 1.6;
+}
+
+strong {
+  color: #222;
+  font-weight: bold;
+}
+
+.product-description .decri,
+.product-description .ts,
+.product-description .tp {
+  margin-bottom: 20px;
+}
+
+.product-description {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.product-description h2 {
+  border-bottom: 2px solid #ddd;
+  padding-bottom: 10px;
+}
+
+/* Khung chi tiết thương hiệu */
+.overlay {
+  position: fixed;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+
+  /* Ẩn mặc định */
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(0.8);
+  transition: all 0.3s ease;
+}
+
+.overlay.open {
+  /* Hiện modal khi có class open */
+  opacity: 1;
+  visibility: visible;
+  transform: scale(1);
+}
+
+.overlay .hoa-don-header {
+  position: absolute;
+  top: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 80%;
+  max-width: 600px;
+}
+
+.close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 2.5rem;
+  width: 1.5em;
+  height: 1.5em;
+  line-height: 1.5em;
+  text-align: center;
+  color: #aaa;
+  cursor: pointer;
+  transition: 0.2s ease;
+}
+
+.close:hover {
+  color: #fff;
+  background-color: #f33;
+  border-radius: 50%;
+}
+
+.brand-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.brand-logo {
+  width: 100px;
+  height: auto;
+  margin-bottom: 20px;
+}
+
+.brand-info p {
+  font-size: 16px;
+  margin: 10px 0;
+}
+
+#brand-title {
+  font-size: 24px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+a.nsx {
+  color: inherit; /* giữ nguyên màu văn bản xung quanh, thường là đen */
+  text-decoration: none; /* bỏ gạch chân mặc định */
+  cursor: pointer;
+  transition: color 0.3s ease, text-decoration 0.3s ease;
+}
+
+a.nsx:hover {
+  color: #e6005c; /* đổi màu khi hover */
+  text-decoration: none; /* gạch chân khi hover */
+}
