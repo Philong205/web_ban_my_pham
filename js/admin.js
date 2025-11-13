@@ -551,8 +551,9 @@ function xemChiTietQuanTri(MaAdmin) {
         return;
       }
 
-      document.getElementById("HinhQuanTri").src =
-        admin.Hinh_Anh || "default-avatar.jpg";
+      document.getElementById("HinhQuanTri").src = admin.Hinh_Anh
+        ? "../image/QuanTri/" + admin.Hinh_Anh
+        : "default-avatar.jpg";
       document.getElementById("TenQuanTri").innerText = admin.Ho_Ten || "";
       document.getElementById("ChucVuQuanTri").innerText = admin.Chuc_Vu || "";
       document.getElementById("EmailQuanTri").innerText = admin.Email || "";
@@ -561,6 +562,17 @@ function xemChiTietQuanTri(MaAdmin) {
       document.getElementById("DiaChiQuanTri").innerText = admin.Dia_Chi || "";
       document.getElementById("GioiThieuQuanTri").innerText =
         admin.Gioi_Thieu || "";
+
+      // Bổ sung hiển thị Lương
+      const luongEl = document.getElementById("LuongQuanTri");
+      if (luongEl) {
+        const luong = admin.Luong ? Number(admin.Luong) : 0;
+        // Hiển thị định dạng tiền VNĐ
+        luongEl.innerText = new Intl.NumberFormat("vi-VN", {
+          style: "currency",
+          currency: "VND",
+        }).format(luong);
+      }
 
       document.getElementById("khungChiTietQuanTri").style.transform =
         "scale(1)";
@@ -651,3 +663,30 @@ function timKiemKhachHang() {
     }
   });
 }
+
+// Hàm hiển thị thông tin admin đang đăng nhập
+// function hienThongTinAdmin(sessionAdmin) {
+//   if (!sessionAdmin || Object.keys(sessionAdmin).length === 0) {
+//     alert("Không có thông tin admin.");
+//     return;
+//   }
+
+//   // Hình đại diện
+//   const hinhEl = document.getElementById("HinhAdmin");
+//   hinhEl.src = sessionAdmin.Hinh_Anh
+//     ? "../image/QuanTri/" + sessionAdmin.Hinh_Anh
+//     : "../image/QuanTri/default-avatar.jpg";
+
+//   // Thông tin cơ bản
+//   document.getElementById("TenAdmin").innerText = sessionAdmin.Ho_Ten || "";
+//   document.getElementById("ChucVuAdmin").innerText = sessionAdmin.Chuc_Vu || "";
+//   document.getElementById("EmailAdmin").innerText = sessionAdmin.Email || "";
+//   document.getElementById("LienLacAdmin").innerText =
+//     sessionAdmin.Lien_Lac || "";
+//   document.getElementById("DiaChiAdmin").innerText = sessionAdmin.Dia_Chi || "";
+//   document.getElementById("GioiThieuAdmin").innerText =
+//     sessionAdmin.Gioi_Thieu || "";
+
+//   // Hiển thị modal
+//   document.getElementById("khungThongTinAdmin").style.transform = "scale(1)";
+// }

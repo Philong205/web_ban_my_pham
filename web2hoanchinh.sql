@@ -2,39 +2,6 @@ SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET NAMES utf8mb4;
 SET time_zone = "+00:00";
 
--- -- ---------------------------------------------
--- -- Bảng: phanquyen
--- -- ---------------------------------------------
-
--- -- Bảng quyền
--- CREATE TABLE `quyen` (
---   `MaQuyen` INT(11) NOT NULL,
---   `TenQuyen` VARCHAR(50) COLLATE utf8_unicode_ci NOT NULL,
---   PRIMARY KEY (`MaQuyen`)
--- ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- -- Thêm dữ liệu mẫu cho bảng quyền
--- INSERT INTO `quyen` (`MaQuyen`, `TenQuyen`) VALUES
--- (1, 'Khách hàng'),
--- (2, 'Quản trị viên');
-
--- -- Bảng phân quyền: gán quyền cho người dùng (KHÔNG thêm CONSTRAINT ngay)
--- CREATE TABLE `phanquyen` (
---   `MaND` INT(11) NOT NULL,
---   `MaQuyen` INT(11) NOT NULL,
---   PRIMARY KEY (`MaND`, `MaQuyen`)
--- ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- -- Gán quyền cho người dùng (lúc này INSERT vẫn được vì chưa có ràng buộc)
--- INSERT INTO `phanquyen` (`MaND`, `MaQuyen`) VALUES
--- (1, 1),  -- Admin
--- (2, 1),  -- Khách
--- (3, 1),
--- (4, 1),
--- (5, 2),
--- (6, 1),
--- (7, 1),
--- (8, 1);
 
 -- ---------------------------------------------
 -- Bảng: thuonghieu
@@ -212,7 +179,7 @@ SET
   sp.TenLoai = lsp.TenLoai;
 
 -- ---------------------------------------------
--- Bảng: nguoidung
+-- Bảng: Khách hàng
 -- ---------------------------------------------
 CREATE TABLE `nguoidung` (
   `MaND` int(11) NOT NULL,
@@ -242,25 +209,27 @@ INSERT INTO `nguoidung` (`MaND`, `TenND`, `Email`, `TaiKhoan`, `MatKhau`, `SDT`,
 
 -- Quản trị viên
 CREATE TABLE `quan_tri` (
-  `Ma_Admin` varchar(5) NOT NULL,        
-  `Ho_Ten` varchar(255) NOT NULL,      
-  `Email` varchar(255) NOT NULL,         
-  `Mat_Khau` varchar(255) NOT NULL,      
-  `Hinh_Anh` text NOT NULL,              
-  `Lien_Lac` varchar(255) NOT NULL,     
-  `Dia_Chi` text NOT NULL,
-  `Chuc_Vu` varchar(255) NOT NULL,      
-  `Gioi_Thieu` text NOT NULL,
+  `Ma_Admin` VARCHAR(5) NOT NULL,
+  `Ho_Ten` VARCHAR(255) NOT NULL,
+  `Email` VARCHAR(255) NOT NULL,
+  `Mat_Khau` VARCHAR(255) NOT NULL,
+  `Hinh_Anh` TEXT NOT NULL,
+  `Lien_Lac` VARCHAR(255) NOT NULL,
+  `Dia_Chi` TEXT NOT NULL,
+  `Chuc_Vu` VARCHAR(255) NOT NULL,
+  `Luong` INT(11) NOT NULL,
+  `Gioi_Thieu` TEXT NOT NULL,
   PRIMARY KEY (`Ma_Admin`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- Đổ dữ liệu cho bảng `quan_tri`
 INSERT INTO `quan_tri` 
-(`Ma_Admin`, `Ho_Ten`, `Email`, `Mat_Khau`, `Hinh_Anh`, `Lien_Lac`, `Dia_Chi`, `Chuc_Vu`, `Gioi_Thieu`) 
+(`Ma_Admin`, `Ho_Ten`, `Email`, `Mat_Khau`, `Hinh_Anh`, `Lien_Lac`, `Dia_Chi`, `Chuc_Vu`, `Luong`, `Gioi_Thieu`) 
 VALUES
-('1', 'Yves', 'test@abc.com', 'admin', 'yves.jpg', '012345678', '255 An Duong Vuong Str D5 HCMC', 'Quản trị viên', 'Nhân Viên Mới'),
-('2', 'Hắc Tún', 'admin@admin.com', 'admin', 'irene.jpeg', '0586128566', '80 79Str. Tan Quy D7', 'Nhân viên ', 'Test'),
-('3', 'test', 'chu@chu.com', 'admin', '98489932_973836263052754_3130673838979809280_n.jpg', 'test', 'test', 'Nhân Viên', 'test');
+('1', 'Yves', 'test@abc.com', 'admin', 'yves.jpg', '012345678', '255 An Duong Vuong Str D5 HCMC', 'Quản trị viên', 12000000, 'Nhân Viên Mới'),
+('2', 'Hắc Tún', 'admin@admin.com', 'admin', 'irene.jpeg', '0586128566', '80 79Str. Tan Quy D7', 'Nhân viên', 9000000, 'Test'),
+('3', 'test', 'chu@chu.com', 'admin', '98489932_973836263052754_3130673838979809280_n.jpg', 'test', 'test', 'Nhân Viên', 8500000, 'test');
+
 
 -- ---------------------------------------------
 -- Bảng: giohang (Shopping Cart)

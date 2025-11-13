@@ -1,8 +1,28 @@
 <?php
 
 // require_once(__DIR__ . '../BackEnd/ConnectionDB/DB_classes.php');
+// require_once('../BackEnd/ConnectionDB/DB_classes.php');
+// $qtv = new QuanTriBUS(); // Giả sử bạn đã tạo class QuanTriBUS tương tự SanPhamBUS
+// $i = 1;
+// $dsQuanTri = $qtv->select_all();
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
+// Kiểm tra xem người dùng đã đăng nhập chưa
+if (!isset($_SESSION['Chuc_Vu'])) {
+    header("Location: ../php/log_out.php"); // Chuyển hướng nếu chưa đăng nhập
+    exit();
+}
+
+// Chỉ cho phép Quản trị viên truy cập
+if ($_SESSION['Chuc_Vu'] !== 'Quản trị viên') {
+    // Có thể hiển thị thông báo hoặc chuyển hướng về trang chủ admin
+    echo "<script>alert('Bạn không có quyền truy cập trang này!'); window.location.href='?page=home';</script>";
+    exit();
+}
+
 require_once('../BackEnd/ConnectionDB/DB_classes.php');
-$qtv = new QuanTriBUS(); // Giả sử bạn đã tạo class QuanTriBUS tương tự SanPhamBUS
+$qtv = new QuanTriBUS();
 $i = 1;
 $dsQuanTri = $qtv->select_all();
 ?>
@@ -18,8 +38,9 @@ $dsQuanTri = $qtv->select_all();
           <th title="Sắp xếp" style="width: 5%" onclick="sortAdminTable('Ma_Admin')">Mã <i class="fa fa-sort"></i></th>
           <th title="Sắp xếp" style="width: 20%" onclick="sortAdminTable('ten')">Họ Tên <i class="fa fa-sort"></i></th>
           <th title="Sắp xếp" style="width: 15%" onclick="sortAdminTable('email')">Email <i class="fa fa-sort"></i></th>
-          <th title="Sắp xếp" style="width: 20%" onclick="sortAdminTable('matkhau')">Mật khẩu <i class="fa fa-sort"></i></th>
-          <th title="Sắp xếp" style="width: 15%" onclick="sortAdminTable('chucvu')">Chức Vụ <i class="fa fa-sort"></i></th>
+          <th title="Sắp xếp" style="width: 15%" onclick="sortAdminTable('matkhau')">Mật khẩu <i class="fa fa-sort"></i></th>
+          <th title="Sắp xếp" style="width: 10%" onclick="sortAdminTable('chucvu')">Chức Vụ <i class="fa fa-sort"></i></th>
+          <th title="Sắp xếp" style="width: 10%" onclick="sortAdminTable('luong')">Lương <i class="fa fa-sort"></i></th>
           <th style="width: 20%">Hành động</th>
         </tr>
       </thead>
@@ -36,18 +57,19 @@ $dsQuanTri = $qtv->select_all();
                         <td>" . htmlspecialchars($row['Email']) . "</td>
                         <td>" . htmlspecialchars($row['Mat_Khau']) . "</td>
                         <td>" . htmlspecialchars($row['Chuc_Vu']) . "</td>
+                        <td>" . number_format($row['Luong'], 0, ',', '.') . "</td>
                         <td>
                             <button class='btn edit-btn btn-success' onclick=\"
                                 moModalSuaQuanTri(
                                     '" . $row['Ma_Admin'] . "',
                                     '" . addslashes($row['Ho_Ten']) . "',
                                     '" . addslashes($row['Email']) . "',
-                                    '" . addslashes($row['Mat_Khau']) . "',
                                     '" . addslashes($row['Lien_Lac']) . "',
                                     '" . addslashes($row['Dia_Chi']) . "',
                                     '" . addslashes($row['Chuc_Vu']) . "',
                                     '" . addslashes($row['Gioi_Thieu']) . "',
-                                    '" . addslashes($row['Hinh_Anh']) . "'
+                                    '" . addslashes($row['Hinh_Anh']) . "',
+                                    '" . $row['Luong'] . "'
                                 ); 
                                 document.getElementById('khungSuaQuanTri').style.transform='scale(1)';
                             \">Sửa</button>
@@ -57,7 +79,7 @@ $dsQuanTri = $qtv->select_all();
                       </tr>";
             }
         } else {
-            echo "<tr><td colspan='6' style='text-align: center;'>Không có quản trị viên nào.</td></tr>";
+            echo "<tr><td colspan='7' style='text-align: center;'>Không có quản trị viên nào.</td></tr>";
         }
         ?>
       </tbody>
@@ -81,6 +103,7 @@ $dsQuanTri = $qtv->select_all();
         </button>
     </div>
 </div>
+
 
 <!-- -----------------------------------------------------Khung thêm quản trị viên--------------------------------------------------- -->
 
@@ -129,7 +152,7 @@ $dsQuanTri = $qtv->select_all();
         <td>Địa chỉ:</td>
         <td><input type="text" name="dia_chi" required /></td>
       </tr>
-
+      
       <tr>
         <td>Chức vụ:</td>
         <td>
@@ -139,6 +162,11 @@ $dsQuanTri = $qtv->select_all();
             <option value="Nhân viên">Nhân viên</option>
           </select>
         </td>
+      </tr>
+
+      <tr>
+        <td>Lương:</td>
+        <td><input type="number" name="Luong" value="0" required /></td>
       </tr>
 
       <tr>
@@ -206,7 +234,7 @@ $dsQuanTri = $qtv->select_all();
 
       <tr>
         <td>Mật khẩu:</td>
-        <td><input type="text" class="form-control" name="Mat_Khau" id="Mat_Khau" required></td>
+        <td><input type="text" class="form-control" name="Mat_Khau" id="Mat_Khau" placeholder="Nhập mới nếu muốn đổi"></td>
       </tr>
 
       <tr>
@@ -226,9 +254,13 @@ $dsQuanTri = $qtv->select_all();
             <option value="">-- Chọn chức vụ --</option>
             <option value="Quản trị viên">Quản trị viên</option>
             <option value="Nhân viên">Nhân viên</option>
-            <option value="Super Admin">Super Admin</option>
           </select>
         </td>
+      </tr>
+
+      <tr>
+        <td>Lương:</td>
+        <td><input type="number" class="form-control" name="Luong" id="Luong" required></td>
       </tr>
 
       <tr>
@@ -267,6 +299,7 @@ $dsQuanTri = $qtv->select_all();
             <img id="HinhQuanTri" src="" alt="Hình quản trị viên">
             <h2 id="TenQuanTri"></h2>
             <p id="ChucVuQuanTri" class="chuc-vu"></p>
+            <p><strong>Lương:</strong> <span id="LuongQuanTri"></span></p>
         </div>
 
         <!-- Thông tin liên hệ -->
@@ -398,8 +431,7 @@ function closeQuanTri() {
 </script>
 
 <script>
-function moModalSuaQuanTri(maAdmin, hoTen, email, matKhau, lienLac, diaChi, chucVu, gioiThieu, hinhAnh) {
-    // Lấy các input trong form sửa
+function moModalSuaQuanTri(maAdmin, hoTen, email, lienLac, diaChi, chucVu, gioiThieu, hinhAnh, luong) {
     const maEl = document.getElementById("Ma_Admin");
     const hoTenEl = document.getElementById("Ho_Ten");
     const emailEl = document.getElementById("Email");
@@ -409,34 +441,29 @@ function moModalSuaQuanTri(maAdmin, hoTen, email, matKhau, lienLac, diaChi, chuc
     const chucVuEl = document.getElementById("Chuc_Vu");
     const gioiThieuEl = document.getElementById("Gioi_Thieu");
     const hinhAnhEl = document.getElementById("Hinh_Anh_Cu_View");
-
-    // Kiểm tra tồn tại
-    if (!maEl || !hoTenEl || !emailEl || !matKhauEl || !lienLacEl || !diaChiEl || !chucVuEl || !gioiThieuEl) {
-        alert("Lỗi: Form sửa quản trị viên chưa được nạp đúng.");
-        return;
-    }
+    const luongEl = document.getElementById("Luong");
 
     // Gán giá trị
     maEl.value = maAdmin;
     hoTenEl.value = hoTen;
     emailEl.value = email;
-    matKhauEl.value = matKhau;
+    matKhauEl.value = ""; // mật khẩu để trống
     lienLacEl.value = lienLac;
     diaChiEl.value = diaChi;
-    chucVuEl.value = chucVu;
+    chucVuEl.value = chucVu.trim();
     gioiThieuEl.value = gioiThieu;
+    luongEl.value = luong;
 
-    // Hiển thị hình cũ nếu có
     if (hinhAnhEl) {
-        hinhAnhEl.src = hinhAnh || "default-avatar.jpg";
+        hinhAnhEl.src = hinhAnh ? "../image/QuanTri/" + hinhAnh : "../image/QuanTri/default-avatar.jpg";
         hinhAnhEl.style.display = hinhAnh ? "block" : "none";
     }
 
-    // Hiện modal
     const modal = document.getElementById("khungSuaQuanTri");
     if (modal) modal.style.transform = "scale(1)";
 }
 </script>
+
 
 
 

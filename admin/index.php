@@ -22,14 +22,22 @@ if (isset($_POST['login'])) {
         $admin = $result->fetch_assoc();
 
         // Kiểm tra Email + Mật khẩu
-        if ($admin && $password === $admin['Mat_Khau']) { 
-            // Nếu dùng hash mật khẩu, thay bằng: password_verify($password, $admin['Mat_Khau'])
-            $_SESSION['admin'] = [
-                'Ma_Admin' => $admin['Ma_Admin'],
-                'Ho_Ten'   => $admin['Ho_Ten'],
-                'Email'    => $admin['Email'],
-                'Hinh_Anh' => $admin['Hinh_Anh']
+        if ($admin && $password === $admin['Mat_Khau']) {
+    $_SESSION['admin'] = [
+                'Ma_Admin'  => $admin['Ma_Admin'],
+                'Ho_Ten'    => $admin['Ho_Ten'],
+                'Email'     => $admin['Email'],
+                'Hinh_Anh'  => $admin['Hinh_Anh'],
+                'Chuc_Vu'   => trim($admin['Chuc_Vu']),
+                'Luong'     => $admin['Luong'] ?? 0,
+                'Lien_Lac'  => $admin['Lien_Lac'],
+                'Dia_Chi'   => $admin['Dia_Chi'],
+                'Gioi_Thieu'=> $admin['Gioi_Thieu']
             ];
+
+    // Đặt thêm 1 biến riêng cho tiện truy cập ở sidebar
+    $_SESSION['Chuc_Vu'] = trim($admin['Chuc_Vu']);
+
             header("Location: admin.php?page=home");
             exit;
         } else {

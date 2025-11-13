@@ -10,12 +10,22 @@ $Lien_Lac   = $_POST['Lien_Lac']   ?? '';
 $Dia_Chi    = $_POST['Dia_Chi']    ?? '';
 $Chuc_Vu    = $_POST['Chuc_Vu']    ?? '';
 $Gioi_Thieu = $_POST['Gioi_Thieu'] ?? '';
+$Luong      = $_POST['Luong']      ?? 0; // thêm trường Lương
 
-// Lấy ảnh cũ từ database
-$result = $conn->query("SELECT Hinh_Anh FROM quan_tri WHERE Ma_Admin='$Ma_Admin'");
-$old_image = '';
+// Lấy dữ liệu cũ từ database
+$result = $conn->query("SELECT Mat_Khau, Hinh_Anh FROM quan_tri WHERE Ma_Admin='$Ma_Admin'");
+$old_password = '';
+$old_image    = '';
 if ($result && $row = $result->fetch_assoc()) {
-    $old_image = $row['Hinh_Anh'];
+    $old_password = $row['Mat_Khau'];
+    $old_image    = $row['Hinh_Anh'];
+}
+
+// Nếu mật khẩu để trống thì giữ mật khẩu cũ
+if (empty($Mat_Khau)) {
+    $Mat_Khau = $old_password;
+} else {
+    // Nếu muốn mã hóa mật khẩu: $Mat_Khau = password_hash($Mat_Khau, PASSWORD_DEFAULT);
 }
 
 // Xử lý ảnh mới
@@ -33,17 +43,17 @@ if (isset($_FILES['Hinh_Anh_Moi']) && $_FILES['Hinh_Anh_Moi']['error'] == 0) {
     $target_file = $target_dir . $ten_file;
 
     if (move_uploaded_file($_FILES["Hinh_Anh_Moi"]["tmp_name"], $target_file)) {
-        $hinh_anh = $target_dir . $ten_file; // cập nhật ảnh mới
+        $hinh_anh = $ten_file; // chỉ lưu tên file
     } else {
         echo "<script>alert('Lỗi khi tải ảnh lên!'); history.back();</script>"; exit;
     }
 }
 
-// Cập nhật database
+// Cập nhật database, bao gồm Lương
 $stmt = $conn->prepare("UPDATE quan_tri 
-    SET Ho_Ten=?, Email=?, Mat_Khau=?, Hinh_Anh=?, Lien_Lac=?, Dia_Chi=?, Chuc_Vu=?, Gioi_Thieu=? 
+    SET Ho_Ten=?, Email=?, Mat_Khau=?, Hinh_Anh=?, Lien_Lac=?, Dia_Chi=?, Chuc_Vu=?, Gioi_Thieu=?, Luong=? 
     WHERE Ma_Admin=?");
-$stmt->bind_param("sssssssss", $Ho_Ten, $Email, $Mat_Khau, $hinh_anh, $Lien_Lac, $Dia_Chi, $Chuc_Vu, $Gioi_Thieu, $Ma_Admin);
+$stmt->bind_param("ssssssssii", $Ho_Ten, $Email, $Mat_Khau, $hinh_anh, $Lien_Lac, $Dia_Chi, $Chuc_Vu, $Gioi_Thieu, $Luong, $Ma_Admin);
 
 if ($stmt->execute()) {
     header("Location: ../admin/admin.php?page=quantrivien"); exit;

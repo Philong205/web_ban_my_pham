@@ -26,22 +26,33 @@ $so_dh = $conn->query($sql_dh)->fetch_assoc()['so_dh'];
 <div id="home" class="container">
   <div class="header">
     <div class="nav">
+      <!-- Thanh tìm kiếm -->
       <div class="search">
         <input type="text" placeholder="Search.." />
         <button type="submit">
-          <img src="../image/admin/search.png" alt="" />
+          <img src="../image/admin/search.png" alt="Search" />
         </button>
       </div>
+
+      <!-- Thông tin user / Admin -->
       <div class="user">
         <a href="#" class="btn">Add New</a>
-        <img src="../image/admin/notifications.png" alt="" />
-        <button class="img-case"
-          onclick="document.getElementById('khungThongTinAdmin').style.transform = 'scale(1)'; autoMaSanPham()">
-          <img src="../image/admin/user.png" alt="Thông tin Admin" />
+        <img src="../image/admin/notifications.png" alt="Notifications" />
+
+        <!-- Nút avatar admin -->
+        <!-- Nút avatar admin -->
+        <button class="icon-case"
+            onclick="
+                xemChiTietQuanTri('<?php echo $_SESSION['admin']['Ma_Admin']; ?>'); 
+                document.getElementById('khungChiTietQuanTri').style.transform='scale(1)';
+            ">
+            <img src="../image/admin/user.png" alt="Thông tin Admin" />
         </button>
       </div>
     </div>
   </div>
+
+
 
   <div class="content">
     <div class="cards">
@@ -153,6 +164,156 @@ $so_dh = $conn->query($sql_dh)->fetch_assoc()['so_dh'];
       </div>
     </div>
   </div>
+
+ <!-- Khung thông tin Admin đang đăng nhập -->
+<div id="khungThongTinAdmin" class="overlay_quantri">
+    <div class="modal-content">
+        <!-- Nút đóng -->
+        <span class="close" onclick="document.getElementById('khungThongTinAdmin').style.transform='scale(0)'">&times;</span>
+
+        <!-- Header -->
+        <div class="quan-tri-header">
+            <img id="HinhAdmin" src="../image/QuanTri/default-avatar.jpg" alt="Hình Admin">
+            <h2 id="TenAdmin"></h2>
+            <p id="ChucVuAdmin" class="chuc-vu"></p>
+        </div>
+
+        <!-- Thông tin liên hệ -->
+        <div class="thong-tin-lien-he">
+            <h3>Thông tin liên hệ</h3>
+            <p><strong>Email:</strong> <span id="EmailAdmin"></span></p>
+            <p><strong>Liên lạc:</strong> <span id="LienLacAdmin"></span></p>
+            <p><strong>Địa chỉ:</strong> <span id="DiaChiAdmin"></span></p>
+        </div>
+
+        <!-- Giới thiệu -->
+        <div class="gioi-thieu">
+            <h3>Giới thiệu</h3>
+            <p id="GioiThieuAdmin"></p>
+        </div>
+
+        <!-- Footer -->
+        <div class="modal-footer">
+            <button onclick="document.getElementById('khungThongTinAdmin').style.transform='scale(0)'">Đóng</button>
+        </div>
+    </div>
+</div>
+
+
+<!-- CSS sử dụng giống khungChiTietQuanTri -->
+<style>
+.overlay_quantri {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: scale(0);
+    transition: transform 0.3s ease;
+    z-index: 999;
+}
+.modal-content {
+    background-color: #fff;
+    width: 400px;
+    max-width: 90%;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    animation: slideDown 0.3s ease;
+}
+@keyframes slideDown {
+    from { transform: translateY(-50px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+.close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 25px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #555;
+}
+.quan-tri-header {
+    text-align: center;
+    padding: 25px 20px;
+    border-bottom: 1px solid #eee;
+}
+.quan-tri-header img {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 10px;
+}
+.quan-tri-header h2 {
+    margin: 0;
+    font-size: 22px;
+}
+.chuc-vu {
+    color: #777;
+    font-weight: 500;
+}
+.thong-tin-lien-he, .gioi-thieu {
+    padding: 15px 20px;
+    border-bottom: 1px solid #eee;
+}
+.thong-tin-lien-he h3, .gioi-thieu h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: #333;
+}
+.modal-footer {
+    text-align: center;
+    padding: 15px;
+}
+.modal-footer button {
+    padding: 8px 20px;
+    background-color: #2196F3;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.modal-footer button:hover {
+    background-color: #1976D2;
+}
+</style>
+
+<!-- JS hiển thị dữ liệu từ session -->
+<script>
+function hienThongTinAdmin(sessionAdmin) {
+  if (!sessionAdmin || Object.keys(sessionAdmin).length === 0) {
+    alert("Không có thông tin admin.");
+    return;
+  }
+
+  // Hình đại diện
+  const hinhEl = document.getElementById("HinhAdmin");
+  hinhEl.src = sessionAdmin.Hinh_Anh
+    ? "../image/QuanTri/" + sessionAdmin.Hinh_Anh
+    : "../image/QuanTri/default-avatar.jpg";
+
+  // Thông tin cơ bản
+  document.getElementById("TenAdmin").innerText = sessionAdmin.Ho_Ten || "";
+  document.getElementById("ChucVuAdmin").innerText = sessionAdmin.Chuc_Vu || "";
+  document.getElementById("EmailAdmin").innerText = sessionAdmin.Email || "";
+  document.getElementById("LienLacAdmin").innerText =
+    sessionAdmin.Lien_Lac || "";
+  document.getElementById("DiaChiAdmin").innerText = sessionAdmin.Dia_Chi || "";
+  document.getElementById("GioiThieuAdmin").innerText =
+    sessionAdmin.Gioi_Thieu || "";
+
+  // Hiển thị modal
+  document.getElementById("khungThongTinAdmin").style.transform = "scale(1)";
+}
+
+</script>
+
 </div>
 
 <script>
