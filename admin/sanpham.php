@@ -197,13 +197,14 @@ if (isset($_POST['sbmSua'])) {
 <!-- Form sửa sản phẩm -->
 <form method="POST" enctype="multipart/form-data">
     <table class="overlayTable table-outline table-content table-header hideImg">
-        <tr><th colspan="2">Sửa Sản Phẩm</th></tr>
-
-        <style>
+      <style>
             #khungSuaSanPham td {
                 color: white;
             }
         </style>
+        
+        <tr><th colspan="2">Sửa Sản Phẩm</th></tr>
+
 
         <tr><td>Mã sản phẩm:</td>
             <td><input type="text" name="MaSP" id="MaSP" value="<?php echo $sanpham['MaSP'] ?? ''; ?>" readonly></td>

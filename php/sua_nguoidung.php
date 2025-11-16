@@ -26,6 +26,8 @@ if ($MaND && $TenND && $Email && $TaiKhoan && $MatKhau && $SDT && $DiaChi) {
         exit;
     } else {
         echo "Lỗi cập nhật: " . $stmt->error;
+        echo "<script>alert('Cập nhật không thành công!'); window.location.href = '../user/index.php';</script>";
+        header("Location: ../admin/admin.php?page=khachhang");
     }
     
 

@@ -213,7 +213,6 @@ CREATE TABLE `quan_tri` (
   `Ho_Ten` VARCHAR(255) NOT NULL,
   `Email` VARCHAR(255) NOT NULL,
   `Mat_Khau` VARCHAR(255) NOT NULL,
-  `Hinh_Anh` TEXT NOT NULL,
   `Lien_Lac` VARCHAR(255) NOT NULL,
   `Dia_Chi` TEXT NOT NULL,
   `Chuc_Vu` VARCHAR(255) NOT NULL,
@@ -224,11 +223,11 @@ CREATE TABLE `quan_tri` (
 
 -- Đổ dữ liệu cho bảng `quan_tri`
 INSERT INTO `quan_tri` 
-(`Ma_Admin`, `Ho_Ten`, `Email`, `Mat_Khau`, `Hinh_Anh`, `Lien_Lac`, `Dia_Chi`, `Chuc_Vu`, `Luong`, `Gioi_Thieu`) 
+(`Ma_Admin`, `Ho_Ten`, `Email`, `Mat_Khau`, `Lien_Lac`, `Dia_Chi`, `Chuc_Vu`, `Luong`, `Gioi_Thieu`) 
 VALUES
-('1', 'Yves', 'test@abc.com', 'admin', 'yves.jpg', '012345678', '255 An Duong Vuong Str D5 HCMC', 'Quản trị viên', 12000000, 'Nhân Viên Mới'),
-('2', 'Hắc Tún', 'admin@admin.com', 'admin', 'irene.jpeg', '0586128566', '80 79Str. Tan Quy D7', 'Nhân viên', 9000000, 'Test'),
-('3', 'test', 'chu@chu.com', 'admin', '98489932_973836263052754_3130673838979809280_n.jpg', 'test', 'test', 'Nhân Viên', 8500000, 'test');
+('1', 'Yves', 'test@abc.com', 'admin', '012345678', '255 An Duong Vuong Str D5 HCMC', 'Quản trị viên', 12000000, 'Nhân Viên Mới'),
+('2', 'Hắc Tún', 'admin@admin.com', 'admin', '0586128566', '80 79Str. Tan Quy D7', 'Nhân viên', 9000000, 'Test'),
+('3', 'test', 'chu@chu.com', 'admin', 'test', 'test', 'Nhân Viên', 8500000, 'test');
 
 
 -- ---------------------------------------------

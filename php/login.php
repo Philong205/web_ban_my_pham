@@ -31,8 +31,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $user = mysqli_fetch_assoc($result);
 
         if ($user['TrangThai'] == 0) {
-            $_SESSION['login_error'] = "Tài khoản của bạn đã bị khóa!";
-            $error_message = "Tài khoản của bạn đã bị khóa!";
+            $_SESSION['login_error'] = "Tài khoản của bạn bị khóa. Vui lòng liên hệ quản trị viên";
+            $error_message = "Tài khoản của bạn bị khóa. Vui lòng liên hệ quản trị viên";
         } elseif ($password === $user['MatKhau']) {
             $_SESSION['user'] = [
                 'id' => $user['MaND'],
@@ -45,9 +45,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit();
         } else {
             $_SESSION['login_error'] = "Email hoặc mật khẩu không đúng!";
+            $error_message = "Email hoặc mật khẩu không đúng!";
         }
     } else {
-        $_SESSION['login_error'] = "Tài khoản không tồn tại!";
+        $_SESSION['login_error'] = "Tài khoản không tồn tại! Vui lòng đăng ký trước khi đăng nhập";
+        $error_message = "Tài khoản không tồn tại! Vui lòng đăng ký trước khi đăng nhập";
     }
     // Nếu có thông báo lỗi, hiển thị alert
     if (isset($error_message)) {

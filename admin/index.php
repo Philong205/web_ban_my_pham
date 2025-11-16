@@ -27,9 +27,8 @@ if (isset($_POST['login'])) {
                 'Ma_Admin'  => $admin['Ma_Admin'],
                 'Ho_Ten'    => $admin['Ho_Ten'],
                 'Email'     => $admin['Email'],
-                'Hinh_Anh'  => $admin['Hinh_Anh'],
                 'Chuc_Vu'   => trim($admin['Chuc_Vu']),
-                'Luong'     => $admin['Luong'] ?? 0,
+                // 'Luong'     => $admin['Luong'] ?? 0,
                 'Lien_Lac'  => $admin['Lien_Lac'],
                 'Dia_Chi'   => $admin['Dia_Chi'],
                 'Gioi_Thieu'=> $admin['Gioi_Thieu']
@@ -42,10 +41,15 @@ if (isset($_POST['login'])) {
             exit;
         } else {
             // Thông báo chung, không tiết lộ email có tồn tại hay không
-            $error = "Email hoặc mật khẩu không đúng!";
+            $error = "Email hoặc mật khẩu không đúng. Vui lòng thử lại";
         }
     } else {
-        $error = "Vui lòng nhập đầy đủ thông tin!";
+        $error = "Tài Khoản không tồn tại! Vui lòng liên hệ với quản trị viên";
+    }
+
+    if (isset($error)) {
+        echo "<script>alert('$error'); window.location.href = '../user/index.php';</script>";
+        exit();
     }
 }
 ?>

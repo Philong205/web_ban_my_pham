@@ -484,20 +484,20 @@ class QuanTriBUS extends DB_business {
     }
 
     //  Lấy 1 quản trị viên theo mã (thêm mới)
-    public function select_by_id($columns = "*", $maAdmin) {
-        try {
-            $sql = "SELECT $columns FROM quan_tri WHERE Ma_Admin = ?";
-            $stmt = $this->__conn->prepare($sql);
-            if (!$stmt) throw new Exception("Prepare failed: " . $this->__conn->error);
-            $stmt->bind_param("s", $maAdmin);
-            $stmt->execute();
-            $result = $stmt->get_result();
-            return $result->fetch_assoc(); // trả về 1 dòng (mảng kết hợp)
-        } catch (Exception $e) {
-            error_log("Select Admin By ID Error: " . $e->getMessage());
-            return null;
-        }
-    }
+    // public function select_by_id($columns = "*", $maAdmin) {
+    //     try {
+    //         $sql = "SELECT $columns FROM quan_tri WHERE Ma_Admin = ?";
+    //         $stmt = $this->__conn->prepare($sql);
+    //         if (!$stmt) throw new Exception("Prepare failed: " . $this->__conn->error);
+    //         $stmt->bind_param("s", $maAdmin);
+    //         $stmt->execute();
+    //         $result = $stmt->get_result();
+    //         return $result->fetch_assoc(); // trả về 1 dòng (mảng kết hợp)
+    //     } catch (Exception $e) {
+    //         error_log("Select Admin By ID Error: " . $e->getMessage());
+    //         return null;
+    //     }
+    // }
 
     // Cập nhật trạng thái quản trị viên trực tiếp bằng SQL
     public function updateAdminStatus($maAdmin, $status) {

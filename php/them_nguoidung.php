@@ -30,7 +30,7 @@ $stmt->bind_param("issssss", $MaND, $tennd, $email, $taikhoan, $matkhau, $diachi
 if ($stmt->execute()) {
     echo "<script>alert('Thêm người dùng thành công'); window.location.href='../admin/admin.php?page=khachhang';</script>";
 } else {
-    echo "❌ Lỗi: " . $stmt->error;
+    echo "Thêm người dùng thất bại:  " . $stmt->error;
 }
 
 $stmt->close();

@@ -1150,3 +1150,209 @@ div[style*="overflow-x: scroll"]::-webkit-scrollbar-track {
   background-color: #f1f1f1; /* Màu nền của đường dẫn */
   border-radius: 10px; /* Bo tròn đường dẫn */
 }
+
+/* Thông tin quản trị viên */
+/* Overlay toàn màn hình */
+.overlay_quantri {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: scale(0);
+  transition: transform 0.3s ease;
+  z-index: 999;
+}
+
+/* Nội dung modal */
+.modal-content {
+  background-color: #fff;
+  width: 400px;
+  max-width: 90%;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  animation: slideDown 0.3s ease;
+}
+
+/* Hiệu ứng slide xuống */
+@keyframes slideDown {
+  from {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* Close button */
+.close {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 25px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #555;
+}
+
+/* Header */
+.quan-tri-header {
+  text-align: center;
+  padding: 25px 20px;
+  border-bottom: 1px solid #eee;
+}
+.quan-tri-header img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 10px;
+}
+.quan-tri-header h2 {
+  margin: 0;
+  font-size: 22px;
+}
+.chuc-vu {
+  color: #777;
+  font-weight: 500;
+}
+
+/* Thông tin liên hệ & Giới thiệu */
+.thong-tin-lien-he,
+.gioi-thieu {
+  padding: 15px 20px;
+  border-bottom: 1px solid #eee;
+}
+.thong-tin-lien-he h3,
+.gioi-thieu h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+/* Footer */
+.modal-footer {
+  text-align: center;
+  padding: 15px;
+}
+.modal-footer button {
+  padding: 8px 20px;
+  background-color: #2196f3;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.modal-footer button:hover {
+  background-color: #1976d2;
+}
+
+/* Sửa thông tin quản trị viên trong home */
+/* Overlay */
+.overlay-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: transform 0.3s ease;
+  z-index: 1000;
+  overflow: auto; /* Cho phép cuộn nếu popup quá cao */
+}
+
+/* Popup content */
+.popup-content {
+  background: #fff;
+  width: 450px;
+  max-width: 90%;
+  border-radius: 10px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  max-height: 90vh; /* Giới hạn chiều cao */
+  overflow: hidden;
+}
+
+/* Header */
+.popup-header {
+  padding: 15px 20px;
+  background: #007bff;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-shrink: 0;
+}
+.popup-header h2 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+.popup-header .close {
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+/* Body */
+.popup-body {
+  padding: 20px;
+  overflow-y: auto; /* Cho phép cuộn nội dung */
+  flex: 1 1 auto; /* Chiếm hết không gian còn lại */
+}
+.form-group {
+  margin-bottom: 15px;
+}
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 500;
+}
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+/* Footer */
+.popup-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding: 15px 20px;
+  background: #f1f1f1;
+  flex-shrink: 0;
+}
+.btn-submit {
+  background: #007bff;
+  color: #fff;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.btn-cancel {
+  background: #ccc;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.btn-submit:hover {
+  background: #0056b3;
+}
+.btn-cancel:hover {
+  background: #999;
+}

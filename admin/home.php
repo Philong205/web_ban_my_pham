@@ -1,4 +1,8 @@
 <?php
+// Đảm bảo đã có session
+if (session_status() == PHP_SESSION_NONE) {
+  session_start();
+}
 
 // Đường dẫn hiện tại: admin/nháp/home.php
 // Ta cần quay ra khỏi "admin/nháp" → về thư mục gốc Web2 → vào thư mục php
@@ -43,7 +47,7 @@ $so_dh = $conn->query($sql_dh)->fetch_assoc()['so_dh'];
         <!-- Nút avatar admin -->
         <button class="icon-case"
             onclick="
-                xemChiTietQuanTri('<?php echo $_SESSION['admin']['Ma_Admin']; ?>'); 
+                hienThongTinAdmin('<?php echo $_SESSION['admin']['Ma_Admin']; ?>'); 
                 document.getElementById('khungChiTietQuanTri').style.transform='scale(1)';
             ">
             <img src="../image/admin/user.png" alt="Thông tin Admin" />
@@ -165,15 +169,16 @@ $so_dh = $conn->query($sql_dh)->fetch_assoc()['so_dh'];
     </div>
   </div>
 
- <!-- Khung thông tin Admin đang đăng nhập -->
+<!-- Khung thông tin Admin -->
 <div id="khungThongTinAdmin" class="overlay_quantri">
     <div class="modal-content">
+
         <!-- Nút đóng -->
         <span class="close" onclick="document.getElementById('khungThongTinAdmin').style.transform='scale(0)'">&times;</span>
 
         <!-- Header -->
         <div class="quan-tri-header">
-            <img id="HinhAdmin" src="../image/QuanTri/default-avatar.jpg" alt="Hình Admin">
+            
             <h2 id="TenAdmin"></h2>
             <p id="ChucVuAdmin" class="chuc-vu"></p>
         </div>
@@ -195,126 +200,106 @@ $so_dh = $conn->query($sql_dh)->fetch_assoc()['so_dh'];
         <!-- Footer -->
         <div class="modal-footer">
             <button onclick="document.getElementById('khungThongTinAdmin').style.transform='scale(0)'">Đóng</button>
+            <button class="btn-edit" onclick="moKhungSuaAdmin()">Sửa thông tin</button>
+
         </div>
     </div>
 </div>
 
+<!-- Popup Sửa Thông Tin Admin -->
+<div id="popupEditAdmin" class="overlay-popup" style="transform: scale(0);">
+    <div class="popup-content">
 
-<!-- CSS sử dụng giống khungChiTietQuanTri -->
-<style>
-.overlay_quantri {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.6);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transform: scale(0);
-    transition: transform 0.3s ease;
-    z-index: 999;
-}
-.modal-content {
-    background-color: #fff;
-    width: 400px;
-    max-width: 90%;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-    animation: slideDown 0.3s ease;
-}
-@keyframes slideDown {
-    from { transform: translateY(-50px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-}
-.close {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    font-size: 25px;
-    font-weight: bold;
-    cursor: pointer;
-    color: #555;
-}
-.quan-tri-header {
-    text-align: center;
-    padding: 25px 20px;
-    border-bottom: 1px solid #eee;
-}
-.quan-tri-header img {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-bottom: 10px;
-}
-.quan-tri-header h2 {
-    margin: 0;
-    font-size: 22px;
-}
-.chuc-vu {
-    color: #777;
-    font-weight: 500;
-}
-.thong-tin-lien-he, .gioi-thieu {
-    padding: 15px 20px;
-    border-bottom: 1px solid #eee;
-}
-.thong-tin-lien-he h3, .gioi-thieu h3 {
-    margin-top: 0;
-    margin-bottom: 10px;
-    color: #333;
-}
-.modal-footer {
-    text-align: center;
-    padding: 15px;
-}
-.modal-footer button {
-    padding: 8px 20px;
-    background-color: #2196F3;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-.modal-footer button:hover {
-    background-color: #1976D2;
-}
-</style>
+        <!-- Header -->
+        <div class="popup-header">
+            <h2>Cập nhật thông tin quản trị</h2>
+            <span class="close" onclick="document.getElementById('popupEditAdmin').style.transform='scale(0)'">&times;</span>
+        </div>
 
-<!-- JS hiển thị dữ liệu từ session -->
+        <!-- Body -->
+        <div class="popup-body">
+            <form id="formEditAdmin" method="POST" enctype="multipart/form-data" action="../php/update_admin_home.php">
+
+
+                <div class="form-group">
+                    <label>Họ tên:</label>
+                    <input type="text" id="EditHoTen" name="Ho_Ten" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Email:</label>
+                    <input type="email" id="EditEmail" name="Email" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Liên lạc:</label>
+                    <input type="text" id="EditLienLac" name="Lien_Lac">
+                </div>
+
+                <div class="form-group">
+                    <label>Địa chỉ:</label>
+                    <textarea id="EditDiaChi" name="Dia_Chi"></textarea>
+                </div>
+
+              
+
+                <div class="form-group">
+                    <label>Giới thiệu:</label>
+                    <textarea id="EditGioiThieu" name="Gioi_Thieu"></textarea>
+                </div>
+
+                <!-- Footer / Submit -->
+                <div class="popup-footer">
+                    <button type="submit" name="CapNhat" class="btn-submit">Lưu thay đổi</button>
+                    <button type="button" class="btn-cancel" onclick="document.getElementById('popupEditAdmin').style.transform='scale(0)'"">Hủy</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+</div>
+
+
+<!-- Lấy dữ liệu admin từ PHP (session) -->
 <script>
-function hienThongTinAdmin(sessionAdmin) {
-  if (!sessionAdmin || Object.keys(sessionAdmin).length === 0) {
-    alert("Không có thông tin admin.");
-    return;
-  }
+    const adminSession = <?php echo json_encode($_SESSION['admin']); ?>;
 
-  // Hình đại diện
-  const hinhEl = document.getElementById("HinhAdmin");
-  hinhEl.src = sessionAdmin.Hinh_Anh
-    ? "../image/QuanTri/" + sessionAdmin.Hinh_Anh
-    : "../image/QuanTri/default-avatar.jpg";
+    function hienThongTinAdmin() {
+        if (!adminSession) {
+            alert("Không tìm thấy thông tin admin!");
+            return;
+        }
 
-  // Thông tin cơ bản
-  document.getElementById("TenAdmin").innerText = sessionAdmin.Ho_Ten || "";
-  document.getElementById("ChucVuAdmin").innerText = sessionAdmin.Chuc_Vu || "";
-  document.getElementById("EmailAdmin").innerText = sessionAdmin.Email || "";
-  document.getElementById("LienLacAdmin").innerText =
-    sessionAdmin.Lien_Lac || "";
-  document.getElementById("DiaChiAdmin").innerText = sessionAdmin.Dia_Chi || "";
-  document.getElementById("GioiThieuAdmin").innerText =
-    sessionAdmin.Gioi_Thieu || "";
+        // Gán dữ liệu vào HTML
+        document.getElementById("TenAdmin").innerText = adminSession.Ho_Ten || "";
+        document.getElementById("ChucVuAdmin").innerText = adminSession.Chuc_Vu || "";
+        document.getElementById("EmailAdmin").innerText = adminSession.Email || "";
+        document.getElementById("LienLacAdmin").innerText = adminSession.Lien_Lac || "";
+        document.getElementById("DiaChiAdmin").innerText = adminSession.Dia_Chi || "";
+        document.getElementById("GioiThieuAdmin").innerText = adminSession.Gioi_Thieu || "";
 
-  // Hiển thị modal
-  document.getElementById("khungThongTinAdmin").style.transform = "scale(1)";
+        // Hiện popup
+        document.getElementById("khungThongTinAdmin").style.transform = "scale(1)";
+    }
+
+    function moKhungSuaAdmin() {
+    if (!adminSession) {
+        alert("Không tìm thấy thông tin admin!");
+        return;
+    }
+
+    document.getElementById("EditHoTen").value = adminSession.Ho_Ten || "";
+    document.getElementById("EditEmail").value = adminSession.Email || "";
+    document.getElementById("EditLienLac").value = adminSession.Lien_Lac || "";
+    document.getElementById("EditDiaChi").value = adminSession.Dia_Chi || "";
+    document.getElementById("EditGioiThieu").value = adminSession.Gioi_Thieu || "";
+
+    document.getElementById("popupEditAdmin").style.transform = "scale(1)";
 }
 
 </script>
 
-</div>
 
 <script>
 function xemChiTietDonHang(mahd) {

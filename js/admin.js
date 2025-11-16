@@ -551,9 +551,6 @@ function xemChiTietQuanTri(MaAdmin) {
         return;
       }
 
-      document.getElementById("HinhQuanTri").src = admin.Hinh_Anh
-        ? "../image/QuanTri/" + admin.Hinh_Anh
-        : "default-avatar.jpg";
       document.getElementById("TenQuanTri").innerText = admin.Ho_Ten || "";
       document.getElementById("ChucVuQuanTri").innerText = admin.Chuc_Vu || "";
       document.getElementById("EmailQuanTri").innerText = admin.Email || "";

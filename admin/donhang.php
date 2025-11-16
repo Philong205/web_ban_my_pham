@@ -181,6 +181,11 @@ if ($fromDate && $toDate) {
     <form method="POST">
         <input type="hidden" name="HoaDon" id="HoaDon" value="">
         <table class="overlayTable table-outline table-content table-header hideImg">
+            <style>
+            #khungUpdateTrangThai td {
+                color: white;
+            }
+        </style>
             <tr><th colspan="2">Cập nhật trạng thái</th></tr>
             <tr>
                 <td>Trạng thái hiện tại:</td>

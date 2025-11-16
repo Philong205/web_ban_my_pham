@@ -51,7 +51,6 @@ $dsQuanTri = $qtv->select_all();
                 echo "<tr id='admin-{$row['Ma_Admin']}'>
                         <td>" . htmlspecialchars($row['Ma_Admin']) . "</td>
                         <td style='position: relative'>
-                            <img class='hinhDaiDien' src='" . htmlspecialchars($row['Hinh_Anh']) . "' alt='Hình quản trị viên'>
                             " . htmlspecialchars($row['Ho_Ten']) . "
                         </td>
                         <td>" . htmlspecialchars($row['Email']) . "</td>
@@ -68,7 +67,7 @@ $dsQuanTri = $qtv->select_all();
                                     '" . addslashes($row['Dia_Chi']) . "',
                                     '" . addslashes($row['Chuc_Vu']) . "',
                                     '" . addslashes($row['Gioi_Thieu']) . "',
-                                    '" . addslashes($row['Hinh_Anh']) . "',
+                                    
                                     '" . $row['Luong'] . "'
                                 ); 
                                 document.getElementById('khungSuaQuanTri').style.transform='scale(1)';
@@ -175,13 +174,6 @@ $dsQuanTri = $qtv->select_all();
       </tr>
 
       <tr>
-        <td>Ảnh đại diện:</td>
-        <td>
-          <input type="file" name="hinh_anh" accept="image/*" required />
-        </td>
-      </tr>
-
-      <tr>
         <td colspan="2" class="table-footer">
           <button
             type="submit"
@@ -268,13 +260,6 @@ $dsQuanTri = $qtv->select_all();
         <td><textarea class="form-control" name="Gioi_Thieu" id="Gioi_Thieu" rows="3"></textarea></td>
       </tr>
 
-      <tr>
-        <td>Ảnh đại diện mới:</td>
-        <td>
-          <input type="file" class="form-control" name="Hinh_Anh_Moi" accept="image/*">
-          <img id="Hinh_Anh_Cu_View" alt="Ảnh hiện tại">
-        </td>
-      </tr>
 
       <tr>
         <td colspan="2" class="table-footer">
@@ -296,7 +281,6 @@ $dsQuanTri = $qtv->select_all();
 
         <!-- Header -->
         <div class="quan-tri-header">
-            <img id="HinhQuanTri" src="" alt="Hình quản trị viên">
             <h2 id="TenQuanTri"></h2>
             <p id="ChucVuQuanTri" class="chuc-vu"></p>
             <p><strong>Lương:</strong> <span id="LuongQuanTri"></span></p>
@@ -324,101 +308,7 @@ $dsQuanTri = $qtv->select_all();
 </div>
 
 <!-- CSS -->
-<style>
-/* Overlay toàn màn hình */
-.overlay_quantri {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.6);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transform: scale(0);
-    transition: transform 0.3s ease;
-    z-index: 999;
-}
 
-/* Nội dung modal */
-.modal-content {
-    background-color: #fff;
-    width: 400px;
-    max-width: 90%;
-    border-radius: 10px;
-    overflow: hidden;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-    animation: slideDown 0.3s ease;
-}
-
-/* Hiệu ứng slide xuống */
-@keyframes slideDown {
-    from { transform: translateY(-50px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-}
-
-/* Close button */
-.close {
-    position: absolute;
-    top: 10px;
-    right: 15px;
-    font-size: 25px;
-    font-weight: bold;
-    cursor: pointer;
-    color: #555;
-}
-
-/* Header */
-.quan-tri-header {
-    text-align: center;
-    padding: 25px 20px;
-    border-bottom: 1px solid #eee;
-}
-.quan-tri-header img {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-bottom: 10px;
-}
-.quan-tri-header h2 {
-    margin: 0;
-    font-size: 22px;
-}
-.chuc-vu {
-    color: #777;
-    font-weight: 500;
-}
-
-/* Thông tin liên hệ & Giới thiệu */
-.thong-tin-lien-he, .gioi-thieu {
-    padding: 15px 20px;
-    border-bottom: 1px solid #eee;
-}
-.thong-tin-lien-he h3, .gioi-thieu h3 {
-    margin-top: 0;
-    margin-bottom: 10px;
-    color: #333;
-}
-
-/* Footer */
-.modal-footer {
-    text-align: center;
-    padding: 15px;
-}
-.modal-footer button {
-    padding: 8px 20px;
-    background-color: #2196F3;
-    color: #fff;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-}
-.modal-footer button:hover {
-    background-color: #1976D2;
-}
-</style>
 
 <!-- JS -->
 <script>
@@ -431,7 +321,7 @@ function closeQuanTri() {
 </script>
 
 <script>
-function moModalSuaQuanTri(maAdmin, hoTen, email, lienLac, diaChi, chucVu, gioiThieu, hinhAnh, luong) {
+function moModalSuaQuanTri(maAdmin, hoTen, email, lienLac, diaChi, chucVu, gioiThieu, luong) {
     const maEl = document.getElementById("Ma_Admin");
     const hoTenEl = document.getElementById("Ho_Ten");
     const emailEl = document.getElementById("Email");
@@ -440,7 +330,6 @@ function moModalSuaQuanTri(maAdmin, hoTen, email, lienLac, diaChi, chucVu, gioiT
     const diaChiEl = document.getElementById("Dia_Chi");
     const chucVuEl = document.getElementById("Chuc_Vu");
     const gioiThieuEl = document.getElementById("Gioi_Thieu");
-    const hinhAnhEl = document.getElementById("Hinh_Anh_Cu_View");
     const luongEl = document.getElementById("Luong");
 
     // Gán giá trị
@@ -453,11 +342,6 @@ function moModalSuaQuanTri(maAdmin, hoTen, email, lienLac, diaChi, chucVu, gioiT
     chucVuEl.value = chucVu.trim();
     gioiThieuEl.value = gioiThieu;
     luongEl.value = luong;
-
-    if (hinhAnhEl) {
-        hinhAnhEl.src = hinhAnh ? "../image/QuanTri/" + hinhAnh : "../image/QuanTri/default-avatar.jpg";
-        hinhAnhEl.style.display = hinhAnh ? "block" : "none";
-    }
 
     const modal = document.getElementById("khungSuaQuanTri");
     if (modal) modal.style.transform = "scale(1)";
