@@ -201,7 +201,6 @@ $maxStep = 3;
                 </div>
             </label>
         </div>
-    </div>
 
     <div class="step-actions">
         <button type="button" class="btn-back" onclick="prevStep(2)"><i class="fas fa-arrow-left"></i> Quay lại</button>
