@@ -1356,3 +1356,23 @@ div[style*="overflow-x: scroll"]::-webkit-scrollbar-track {
 .btn-cancel:hover {
   background: #999;
 }
+
+/* sản phẩm phân ra 3 nhánh con */
+.has-submenu .submenu {
+  display: none;
+  padding-left: 20px;
+}
+
+.has-submenu.open .submenu {
+  display: block;
+}
+
+.submenu a {
+  font-size: 14px;
+  display: block;
+  padding: 5px 0;
+}
+
+.submenu-arrow {
+  float: right;
+}

@@ -21,11 +21,25 @@ if (session_status() == PHP_SESSION_NONE) {
         <i class="fa fa-home"></i> Trang Chủ
       </a>
     </li>
-    <li class="nav-item">
+    <!-- <li class="nav-item">
       <a href="?page=sanpham" class="nav-link">
         <i class="fa fa-th-large"></i> Sản Phẩm
       </a>
-    </li>
+    </li> -->
+    <li class="nav-item has-submenu">
+  <a href="?page=sanpham" class="nav-link" onclick="toggleSubMenu(event)">
+    <i class="fa fa-th-large"></i> Hàng Hóa
+    <i class="fa fa-angle-down submenu-arrow"></i>
+  </a>
+
+  <ul class="submenu">
+    <li><a class="nav-link" href="?page=sanpham">Sản Phẩm</a></li>
+    <li><a class="nav-link" href="?page=thuonghieu">Thương hiệu</a></li>
+    <li><a class="nav-link" href="?page=khuyenmai">Khuyến mãi</a></li>
+    <li><a class="nav-link" href="?page=loaisanpham">Loại sản phẩm</a></li>
+  </ul>
+</li>
+
     <li class="nav-item">
       <a href="?page=donhang" class="nav-link">
         <i class="fa fa-file-text-o"></i> Đơn Hàng
@@ -54,3 +68,11 @@ if (session_status() == PHP_SESSION_NONE) {
     </li>
   </ul>
 </div>
+
+<script>
+function toggleSubMenu(event) {
+  event.preventDefault();
+  let item = event.target.closest(".has-submenu");
+  item.classList.toggle("open");
+}
+</script>

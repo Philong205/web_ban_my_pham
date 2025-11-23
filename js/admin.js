@@ -687,3 +687,21 @@ function timKiemKhachHang() {
 //   // Hiển thị modal
 //   document.getElementById("khungThongTinAdmin").style.transform = "scale(1)";
 // }
+
+function suaTH(ma) {
+    fetch(`get_thuonghieu2.php?MaTH=${ma}`)
+    .then(res => res.json())
+    .then(data => {
+        if (data.error) return alert(data.error);
+
+        document.getElementById('MaTH_sua').value = data.MaTH;
+        document.getElementById('TenTH_sua').value = data.TenTH;
+        document.getElementById('XuatXu_sua').value = data.XuatXu;
+        document.getElementById('Mota_sua').value = data.Mota;
+        document.getElementById('LogoTH_show').src = data.LogoTH;
+
+        document.getElementById('LogoTH_old').value = data.LogoTH;
+
+        document.getElementById('khungSuaTH').style.transform = "scale(1)";
+    });
+}

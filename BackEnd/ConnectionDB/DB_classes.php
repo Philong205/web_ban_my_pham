@@ -401,6 +401,8 @@ class ThuongHieuBUS extends DB_business {
     }
 }
 
+
+
 // Lớp loại sản phẩm
 class LoaiSanPhamBUS extends DB_business {
     function __construct() {
