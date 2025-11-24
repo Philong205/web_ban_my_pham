@@ -29,10 +29,26 @@ if (empty($Mat_Khau)) {
 
 
 // Cập nhật database, bao gồm Lương
+// $stmt = $conn->prepare("UPDATE quan_tri 
+//     SET Ho_Ten=?, Email=?, Mat_Khau=?, Lien_Lac=?, Dia_Chi=?, Chuc_Vu=?, Gioi_Thieu=?, Luong=? 
+//     WHERE Ma_Admin=?");
+// $stmt->bind_param("ssssssssii", $Ho_Ten, $Email, $Mat_Khau, $Lien_Lac, $Dia_Chi, $Chuc_Vu, $Gioi_Thieu, $Luong, $Ma_Admin);
+
 $stmt = $conn->prepare("UPDATE quan_tri 
     SET Ho_Ten=?, Email=?, Mat_Khau=?, Lien_Lac=?, Dia_Chi=?, Chuc_Vu=?, Gioi_Thieu=?, Luong=? 
     WHERE Ma_Admin=?");
-$stmt->bind_param("ssssssssii", $Ho_Ten, $Email, $Mat_Khau, $Lien_Lac, $Dia_Chi, $Chuc_Vu, $Gioi_Thieu, $Luong, $Ma_Admin);
+
+$stmt->bind_param("sssssssis",
+    $Ho_Ten,
+    $Email,
+    $Mat_Khau,
+    $Lien_Lac,
+    $Dia_Chi,
+    $Chuc_Vu,
+    $Gioi_Thieu,
+    $Luong,
+    $Ma_Admin
+);
 
 if ($stmt->execute()) {
     header("Location: ../admin/admin.php?page=quantrivien"); exit;
