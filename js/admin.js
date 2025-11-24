@@ -500,34 +500,34 @@ function chitietHoaDon(MaHD) {
 
 //----------------------------------------------------------Khung Update trạng thái-----------------------------------------------------------------
 
-// function updateTrangThai(MaHD) {
-//   hienThiThongTinHoaDon(MaHD);
-//   document.getElementById("khungUpdateTrangThai").style.display = "block";
-// }
-
-// // Khi người dùng thay đổi dropdown, cập nhật tên trạng thái vào hidden input
-// document.addEventListener("DOMContentLoaded", function () {
-//   const select = document.getElementById("updateTrangthai");
-//   select.addEventListener("change", function () {
-//     const selectedText = select.options[select.selectedIndex].text;
-//     document.getElementById("TrangThaiHidden").value = selectedText;
-//   });
-// });
 function updateTrangThai(MaHD) {
   hienThiThongTinHoaDon(MaHD);
-  const khung = document.getElementById("khungUpdateTrangThai");
-  khung.style.transform = "scale(1)";
-  khung.style.transition = "transform 0.3s";
+  document.getElementById("khungUpdateTrangThai").style.display = "block";
 }
 
-// Khi người dùng thay đổi dropdown, cập nhật hidden input
+// Khi người dùng thay đổi dropdown, cập nhật tên trạng thái vào hidden input
 document.addEventListener("DOMContentLoaded", function () {
   const select = document.getElementById("updateTrangthai");
   select.addEventListener("change", function () {
-    document.getElementById("TrangThaiHidden").value =
-      select.options[select.selectedIndex].text;
+    const selectedText = select.options[select.selectedIndex].text;
+    document.getElementById("TrangThaiHidden").value = selectedText;
   });
 });
+// function updateTrangThai(MaHD) {
+//   hienThiThongTinHoaDon(MaHD);
+//   const khung = document.getElementById("khungUpdateTrangThai");
+//   khung.style.transform = "scale(1)";
+//   khung.style.transition = "transform 0.3s";
+// }
+
+// // Khi người dùng thay đổi dropdown, cập nhật hidden input
+// document.addEventListener("DOMContentLoaded", function () {
+//   const select = document.getElementById("updateTrangthai");
+//   select.addEventListener("change", function () {
+//     document.getElementById("TrangThaiHidden").value =
+//       select.options[select.selectedIndex].text;
+//   });
+// });
 
 //---------------------------------------------------------Lọc hóa đơn theo ngày-----------------------------------------------------------------
 

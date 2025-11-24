@@ -178,19 +178,26 @@ if ($fromDate && $toDate) {
 <div id="khungUpdateTrangThai" class="overlay">
     <span class="close" onclick="this.parentElement.style.transform='scale(0)';">&times;</span>
 
-    <form method="POST">
-        <input type="hidden" name="HoaDon" id="HoaDon" value="">
+    <style>
+        #khungUpdateTrangThai td {
+            color: white;
+        }
+    </style>
+
+    <form method="POST" action="../php/update_trang_thai.php">
+        <!-- Hidden input lưu mã hóa đơn -->
+        <input type="hidden" name="MaHD" id="HoaDon" value="">
+        <!-- Hidden input lưu mã trạng thái chọn -->
+        <input type="hidden" name="TrangThaiHidden" id="TrangThaiHidden" value="">
+
         <table class="overlayTable table-outline table-content table-header hideImg">
-            <style>
-            #khungUpdateTrangThai td {
-                color: white;
-            }
-        </style>
             <tr><th colspan="2">Cập nhật trạng thái</th></tr>
+
             <tr>
                 <td>Trạng thái hiện tại:</td>
                 <td><span id="TrangThaiDisplay"></span></td>
             </tr>
+
             <tr>
                 <td>Chọn trạng thái mới:</td>
                 <td>
@@ -200,16 +207,20 @@ if ($fromDate && $toDate) {
                             <option value="<?= $tt['MaTT'] ?>"><?= htmlspecialchars($tt['TrangThai']) ?></option>
                         <?php endforeach; ?>
                     </select>
-                    <input type="hidden" name="TrangThaiHidden" id="TrangThaiHidden" value="">
                 </td>
             </tr>
+
             <tr>
                 <td colspan="2" class="table-footer">
-                    <button type="submit" name="sbmcapnhat">CẬP NHẬT</button>
+                    <div class="modal-footer">
+                        <button type="submit" name="sbmcapnhat" class="btn btn-primary">Cập nhật</button>
+                        <button type="button" class="btn btn-secondary" onclick="document.getElementById('khungUpdateTrangThai').style.transform='scale(0)'">Hủy</button>
+                    </div>
                 </td>
             </tr>
         </table>
     </form>
 </div>
+
 </div>
 <!-- // end đơn hàng -->
