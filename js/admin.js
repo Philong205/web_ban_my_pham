@@ -405,6 +405,38 @@ function deleteProduct(maSP) {
 
 //----------------------------------------------------------Khung Hóa đơn-----------------------------------------------------------------
 
+// function hienThiThongTinHoaDon(MaHD) {
+//   fetch("../php/get_hoadon.php?MaHD=" + encodeURIComponent(MaHD))
+//     .then((response) => response.json())
+//     .then((hoadon) => {
+//       if (hoadon.error) {
+//         alert("Lỗi: " + hoadon.error);
+//         return;
+//       }
+
+//       document.getElementById("HoaDon").value = hoadon.MaHD || "";
+//       document.getElementById("TrangThaiDisplay").innerText =
+//         hoadon.TrangThai || "";
+//       document.getElementById("NguoiNhan").innerText = hoadon.NguoiNhan || "";
+//       document.getElementById("DiaChi").innerText = hoadon.DiaChi || "";
+//       document.getElementById("NgayLap").innerText = hoadon.NgayLap || "";
+//       document.getElementById("TongTien").innerText =
+//         Number(hoadon.TongTien).toLocaleString() + " VNĐ";
+
+//       // Gán MaTT vào dropdown
+//       const select = document.getElementById("updateTrangthai");
+//       if (hoadon.MaTT) {
+//         select.value = hoadon.MaTT;
+//         document.getElementById("TrangThaiHidden").value =
+//           select.options[select.selectedIndex].text;
+//       }
+//     })
+//     .catch((error) => {
+//       console.error("Lỗi khi lấy dữ liệu hóa đơn:", error);
+//       alert("Không thể lấy chi tiết hóa đơn.");
+//     });
+// }
+
 function hienThiThongTinHoaDon(MaHD) {
   fetch("../php/get_hoadon.php?MaHD=" + encodeURIComponent(MaHD))
     .then((response) => response.json())
@@ -423,10 +455,10 @@ function hienThiThongTinHoaDon(MaHD) {
       document.getElementById("TongTien").innerText =
         Number(hoadon.TongTien).toLocaleString() + " VNĐ";
 
-      // Gán MaTT vào dropdown
+      // Gán MaTT vào dropdown (ép kiểu thành string)
       const select = document.getElementById("updateTrangthai");
-      if (hoadon.MaTT) {
-        select.value = hoadon.MaTT;
+      if (hoadon.MaTT != null) {
+        select.value = String(hoadon.MaTT); // ép kiểu để chọn đúng option
         document.getElementById("TrangThaiHidden").value =
           select.options[select.selectedIndex].text;
       }
@@ -468,17 +500,32 @@ function chitietHoaDon(MaHD) {
 
 //----------------------------------------------------------Khung Update trạng thái-----------------------------------------------------------------
 
+// function updateTrangThai(MaHD) {
+//   hienThiThongTinHoaDon(MaHD);
+//   document.getElementById("khungUpdateTrangThai").style.display = "block";
+// }
+
+// // Khi người dùng thay đổi dropdown, cập nhật tên trạng thái vào hidden input
+// document.addEventListener("DOMContentLoaded", function () {
+//   const select = document.getElementById("updateTrangthai");
+//   select.addEventListener("change", function () {
+//     const selectedText = select.options[select.selectedIndex].text;
+//     document.getElementById("TrangThaiHidden").value = selectedText;
+//   });
+// });
 function updateTrangThai(MaHD) {
   hienThiThongTinHoaDon(MaHD);
-  document.getElementById("khungUpdateTrangThai").style.display = "block";
+  const khung = document.getElementById("khungUpdateTrangThai");
+  khung.style.transform = "scale(1)";
+  khung.style.transition = "transform 0.3s";
 }
 
-// Khi người dùng thay đổi dropdown, cập nhật tên trạng thái vào hidden input
+// Khi người dùng thay đổi dropdown, cập nhật hidden input
 document.addEventListener("DOMContentLoaded", function () {
   const select = document.getElementById("updateTrangthai");
   select.addEventListener("change", function () {
-    const selectedText = select.options[select.selectedIndex].text;
-    document.getElementById("TrangThaiHidden").value = selectedText;
+    document.getElementById("TrangThaiHidden").value =
+      select.options[select.selectedIndex].text;
   });
 });
 
@@ -689,19 +736,19 @@ function timKiemKhachHang() {
 // }
 
 function suaTH(ma) {
-    fetch(`get_thuonghieu2.php?MaTH=${ma}`)
-    .then(res => res.json())
-    .then(data => {
-        if (data.error) return alert(data.error);
+  fetch(`get_thuonghieu2.php?MaTH=${ma}`)
+    .then((res) => res.json())
+    .then((data) => {
+      if (data.error) return alert(data.error);
 
-        document.getElementById('MaTH_sua').value = data.MaTH;
-        document.getElementById('TenTH_sua').value = data.TenTH;
-        document.getElementById('XuatXu_sua').value = data.XuatXu;
-        document.getElementById('Mota_sua').value = data.Mota;
-        document.getElementById('LogoTH_show').src = data.LogoTH;
+      document.getElementById("MaTH_sua").value = data.MaTH;
+      document.getElementById("TenTH_sua").value = data.TenTH;
+      document.getElementById("XuatXu_sua").value = data.XuatXu;
+      document.getElementById("Mota_sua").value = data.Mota;
+      document.getElementById("LogoTH_show").src = data.LogoTH;
 
-        document.getElementById('LogoTH_old').value = data.LogoTH;
+      document.getElementById("LogoTH_old").value = data.LogoTH;
 
-        document.getElementById('khungSuaTH').style.transform = "scale(1)";
+      document.getElementById("khungSuaTH").style.transform = "scale(1)";
     });
 }
