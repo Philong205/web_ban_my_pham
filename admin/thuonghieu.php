@@ -180,6 +180,8 @@ $dsTH = $th->select_all();
             <button onclick="closeTH()">Đóng</button>
         </div>
     </div>
+    <!-- Khung chi tiết Thương Hiệu - Phiên bản mới -->
+
 </div>
 
 <script>

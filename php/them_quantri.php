@@ -8,38 +8,38 @@ if ($conn->connect_error) {
 }
 
 // === 1️⃣ Lấy dữ liệu từ form ===
-$ho_ten     = trim($_POST['Ho_Ten'] ?? '');
-$email      = trim($_POST['Email'] ?? '');
-$mat_khau   = $_POST['Mat_Khau'] ?? '';
-$lien_lac   = trim($_POST['Lien_Lac'] ?? '');
-$dia_chi    = trim($_POST['Dia_Chi'] ?? '');
-$chuc_vu    = trim($_POST['Chuc_Vu'] ?? '');
+$ho_ten     = trim($_POST['ho_ten'] ?? '');
+$email      = trim($_POST['email'] ?? '');
+$mat_khau   = $_POST['mat_khau'] ?? '';
+$lien_lac   = trim($_POST['lien_lac'] ?? '');
+$dia_chi    = trim($_POST['dia_chi'] ?? '');
+$chuc_vu    = trim($_POST['chuc_vu'] ?? '');
 $luong      = intval($_POST['Luong'] ?? 0);
-$gioi_thieu = trim($_POST['Gioi_Thieu'] ?? '');
+$gioi_thieu = trim($_POST['gioi_thieu'] ?? '');
 
- 
-
-// === 3️⃣ Mã hóa mật khẩu ===
-// $mat_khau_hash = password_hash($mat_khau, PASSWORD_DEFAULT);
-
-// === 4️⃣ Tạo mã admin tự động dựa trên số lượng hiện tại ===
+// === 2️⃣ Tạo mã admin tự động dựa trên số lượng hiện tại ===
 $result = mysqli_query($conn, "SELECT COUNT(*) as total FROM quan_tri");
 $row = mysqli_fetch_assoc($result);
 $ma_admin = $row['total'] + 1; // ví dụ: nếu có 8 admin, mã mới = 9
-$ma_admin = str_pad($ma_admin, 5, "0", STR_PAD_LEFT); // Ví dụ: 00009
 
-// === 5️⃣ Câu lệnh SQL thêm dữ liệu ===
+// === 3️⃣ Chuẩn bị câu lệnh SQL thêm dữ liệu ===
 $sql = "INSERT INTO quan_tri 
         (Ma_Admin, Ho_Ten, Email, Mat_Khau, Lien_Lac, Dia_Chi, Chuc_Vu, Luong, Gioi_Thieu)
         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 $stmt = $conn->prepare($sql);
+
+if (!$stmt) {
+    die("❌ Lỗi chuẩn bị câu lệnh: " . $conn->error);
+}
+
+// Bind 9 biến: s = string, i = integer
 $stmt->bind_param(
-    "isssssssis", 
+    "sssssssis", 
     $ma_admin,
     $ho_ten,
     $email,
-    $mat_khau_hash,
+    $mat_khau,
     $lien_lac,
     $dia_chi,
     $chuc_vu,
@@ -47,17 +47,18 @@ $stmt->bind_param(
     $gioi_thieu
 );
 
-// === 6️⃣ Thực thi và phản hồi ===
+// === 4️⃣ Thực thi và phản hồi ===
 if ($stmt->execute()) {
     echo "<script>
         alert('Thêm quản trị viên thành công! Mã admin: $ma_admin');
         window.location.href='../admin/admin.php?page=quantrivien';
     </script>";
 } else {
-    echo "❌ Lỗi: " . $stmt->error;
+    echo "❌ Lỗi khi thêm quản trị viên: " . $stmt->error;
 }
 
 // Đóng kết nối
 $stmt->close();
 $conn->close();
 ?>
+

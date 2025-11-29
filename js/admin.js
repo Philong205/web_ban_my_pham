@@ -405,38 +405,6 @@ function deleteProduct(maSP) {
 
 //----------------------------------------------------------Khung Hóa đơn-----------------------------------------------------------------
 
-// function hienThiThongTinHoaDon(MaHD) {
-//   fetch("../php/get_hoadon.php?MaHD=" + encodeURIComponent(MaHD))
-//     .then((response) => response.json())
-//     .then((hoadon) => {
-//       if (hoadon.error) {
-//         alert("Lỗi: " + hoadon.error);
-//         return;
-//       }
-
-//       document.getElementById("HoaDon").value = hoadon.MaHD || "";
-//       document.getElementById("TrangThaiDisplay").innerText =
-//         hoadon.TrangThai || "";
-//       document.getElementById("NguoiNhan").innerText = hoadon.NguoiNhan || "";
-//       document.getElementById("DiaChi").innerText = hoadon.DiaChi || "";
-//       document.getElementById("NgayLap").innerText = hoadon.NgayLap || "";
-//       document.getElementById("TongTien").innerText =
-//         Number(hoadon.TongTien).toLocaleString() + " VNĐ";
-
-//       // Gán MaTT vào dropdown
-//       const select = document.getElementById("updateTrangthai");
-//       if (hoadon.MaTT) {
-//         select.value = hoadon.MaTT;
-//         document.getElementById("TrangThaiHidden").value =
-//           select.options[select.selectedIndex].text;
-//       }
-//     })
-//     .catch((error) => {
-//       console.error("Lỗi khi lấy dữ liệu hóa đơn:", error);
-//       alert("Không thể lấy chi tiết hóa đơn.");
-//     });
-// }
-
 function hienThiThongTinHoaDon(MaHD) {
   fetch("../php/get_hoadon.php?MaHD=" + encodeURIComponent(MaHD))
     .then((response) => response.json())
@@ -513,21 +481,6 @@ document.addEventListener("DOMContentLoaded", function () {
     document.getElementById("TrangThaiHidden").value = selectedText;
   });
 });
-// function updateTrangThai(MaHD) {
-//   hienThiThongTinHoaDon(MaHD);
-//   const khung = document.getElementById("khungUpdateTrangThai");
-//   khung.style.transform = "scale(1)";
-//   khung.style.transition = "transform 0.3s";
-// }
-
-// // Khi người dùng thay đổi dropdown, cập nhật hidden input
-// document.addEventListener("DOMContentLoaded", function () {
-//   const select = document.getElementById("updateTrangthai");
-//   select.addEventListener("change", function () {
-//     document.getElementById("TrangThaiHidden").value =
-//       select.options[select.selectedIndex].text;
-//   });
-// });
 
 //---------------------------------------------------------Lọc hóa đơn theo ngày-----------------------------------------------------------------
 
@@ -706,49 +659,4 @@ function timKiemKhachHang() {
       row.style.display = "none"; // Ẩn dòng nếu không khớp
     }
   });
-}
-
-// Hàm hiển thị thông tin admin đang đăng nhập
-// function hienThongTinAdmin(sessionAdmin) {
-//   if (!sessionAdmin || Object.keys(sessionAdmin).length === 0) {
-//     alert("Không có thông tin admin.");
-//     return;
-//   }
-
-//   // Hình đại diện
-//   const hinhEl = document.getElementById("HinhAdmin");
-//   hinhEl.src = sessionAdmin.Hinh_Anh
-//     ? "../image/QuanTri/" + sessionAdmin.Hinh_Anh
-//     : "../image/QuanTri/default-avatar.jpg";
-
-//   // Thông tin cơ bản
-//   document.getElementById("TenAdmin").innerText = sessionAdmin.Ho_Ten || "";
-//   document.getElementById("ChucVuAdmin").innerText = sessionAdmin.Chuc_Vu || "";
-//   document.getElementById("EmailAdmin").innerText = sessionAdmin.Email || "";
-//   document.getElementById("LienLacAdmin").innerText =
-//     sessionAdmin.Lien_Lac || "";
-//   document.getElementById("DiaChiAdmin").innerText = sessionAdmin.Dia_Chi || "";
-//   document.getElementById("GioiThieuAdmin").innerText =
-//     sessionAdmin.Gioi_Thieu || "";
-
-//   // Hiển thị modal
-//   document.getElementById("khungThongTinAdmin").style.transform = "scale(1)";
-// }
-
-function suaTH(ma) {
-  fetch(`get_thuonghieu2.php?MaTH=${ma}`)
-    .then((res) => res.json())
-    .then((data) => {
-      if (data.error) return alert(data.error);
-
-      document.getElementById("MaTH_sua").value = data.MaTH;
-      document.getElementById("TenTH_sua").value = data.TenTH;
-      document.getElementById("XuatXu_sua").value = data.XuatXu;
-      document.getElementById("Mota_sua").value = data.Mota;
-      document.getElementById("LogoTH_show").src = data.LogoTH;
-
-      document.getElementById("LogoTH_old").value = data.LogoTH;
-
-      document.getElementById("khungSuaTH").style.transform = "scale(1)";
-    });
 }

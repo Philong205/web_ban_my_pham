@@ -226,7 +226,7 @@ $dsQuanTri = $qtv->select_all();
 
       <tr>
         <td>Mật khẩu:</td>
-        <td><input type="text" class="form-control" name="Mat_Khau" id="Mat_Khau" placeholder="Nhập mới nếu muốn đổi"></td>
+        <td><input type="password" class="form-control" name="Mat_Khau" id="Mat_Khau" placeholder="Nhập mới nếu muốn đổi"></td>
       </tr>
 
       <tr>

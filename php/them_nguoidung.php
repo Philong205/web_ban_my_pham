@@ -15,9 +15,6 @@ $matkhau  = $_POST['matkhau'] ?? '';
 $diachi   = trim($_POST['diachi'] ?? '');
 $sdt      = trim($_POST['sdt'] ?? '');
 
-// Mã hóa mật khẩu
-// $matkhau_mahoa = password_hash($matkhau, PASSWORD_DEFAULT);
-
 // Tạo mã người dùng dựa trên số lượng hiện tại
 $result = mysqli_query($conn, "SELECT COUNT(*) as total FROM nguoidung");
 $row = mysqli_fetch_assoc($result);
